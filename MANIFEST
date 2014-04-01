@@ -1,5 +1,10 @@
+Build.PL
+Changes
+lib/CLDR/Transform.pm
 LICENSE
 MANIFEST            This list of files
+META.json
+META.yml
 README
 t/00-load.t
 t/objects.t

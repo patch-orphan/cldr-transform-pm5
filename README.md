@@ -1,5 +1,8 @@
 ![Perl CLDR](https://www.gravatar.com/avatar/656f15a25eff4437f5a82e7c929f41dd?s=96)
 
+[![Build Status](https://travis-ci.org/perl-cldr/cldr-transform-pm5.png)](https://travis-ci.org/perl-cldr/cldr-transform-pm5)
+[![Coverage Status](https://coveralls.io/repos/perl-cldr/cldr-transform-pm5/badge.png)](https://coveralls.io/r/perl-cldr/cldr-transform-pm5)
+
 # NAME
 
 CLDR::Transform - Unicode CLDR transformations, transliterations, and transcriptions

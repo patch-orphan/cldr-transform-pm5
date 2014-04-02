@@ -2,6 +2,8 @@ package CLDR::Transform;
 
 use v5.8.1;
 use utf8;
+use charnames qw( :full );
+use Unicode::Normalize qw( NFKC );
 
 use Moo;
 use namespace::clean;
@@ -23,8 +25,65 @@ has variant => (
     is => 'rw',
 );
 
+my %transform = (
+    Hiragana => { Katakana => sub {
+        my $text = shift;
+
+        $text =~ s{
+            ( [\N{NULL}-~、。\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}-゜ァ-ー｡-ﾟー\p{Hira}\p{Kana}\p{Mn}]+ )
+        }{
+            my $filter = NFKC($1);
+
+            for ($filter) {
+                s{わ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}{ヷ}g;
+                s{ゐ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}{ヸ}g;
+                s{ゑ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}{ヹ}g;
+                s{を\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}{ヺ}g;
+                tr{ぁ-ゔゝゞ}{ァ-ヴヽヾ};
+            }
+
+            return $filter;
+        }xeg;
+
+        return $text;
+    } },
+    Katakana => { Hiragana => sub {
+        my $text = shift;
+
+        $text =~ s{
+            ( [\N{NULL}-~、。\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}-゜ァ-ー｡-ﾟー\p{Hira}\p{Kana}\p{Mn}]+ )
+        }{
+            my $filter = NFKC($1);
+
+            for ($filter) {
+                s{ヷ}{わ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}g;
+                s{ヸ}{ゐ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}g;
+                s{ヹ}{ゑ\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}g;
+                s{ヺ}{を\N{COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK}}g;
+                tr{ァ-ヴヽヾヵヶ}{ぁ-ゔゝゞかけ};
+                s{ (?<= [ぁあかがさざただなはばぱまゃやらゎわ] ) ー }{あ}xg;
+                s{ (?<= [ぃいきぎしじちぢにひびぴみりゐ]       ) ー }{い}xg;
+                s{ (?<= [ぅうくぐすずっつづぬふぶぷむゅゆるゔ] ) ー }{う}xg;
+                s{ (?<= [ぇえけげせぜてでねへべぺめれゑ]       ) ー }{え}xg;
+                s{ (?<= [ぉおこごそぞとどのほぼぽもょよろを]   ) ー }{お}xg;
+            }
+
+            return $filter;
+        }xeg;
+
+        return $text;
+    } },
+);
+
 sub transform {
     my ($self, $text) = @_;
+
+    return undef
+        if !defined $text
+        || !exists $transform{$self->source}
+        || !exists $transform{$self->source}{$self->target};
+
+    $text = $transform{$self->source}{$self->target}($text);
 
     return $text;
 }

@@ -17,10 +17,12 @@ my $builder = Module::Build->new(
         'Test::More' => '0.82',
     },
     requires => {
-        'perl'             => '5.8.1',
-        'namespace::clean' => 0,
-        'utf8'             => 0,
-        'Moo'              => '1.001000',
+        'perl'               => '5.8.1',
+        'charnames'          => 0,
+        'namespace::clean'   => 0,
+        'utf8'               => 0,
+        'Moo'                => '1.001000',
+        'Unicode::Normalize' => 0,
     },
     meta_merge => {
         resources => {

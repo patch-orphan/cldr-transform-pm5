@@ -4,7 +4,9 @@ use warnings;
 use English;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'CLDR::Transform' }
+BEGIN {
+    use_ok 'CLDR::Transform';
+}
 
 diag join ', ' => (
     "CLDR::Transform v$CLDR::Transform::VERSION",

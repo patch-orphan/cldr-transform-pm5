@@ -11,11 +11,10 @@ my $builder = Module::Build->new(
         'Software::License' => 0,
     },
     build_requires => {
-        'open'         => 0,
-        'English'      => 0,
-        'Pod::Man'     => '2.04',
-        'Scalar::Util' => 0,
-        'Test::More'   => '0.82',
+        'open'       => 0,
+        'English'    => 0,
+        'Pod::Man'   => '2.04',
+        'Test::More' => '0.82',
     },
     requires => {
         'perl'             => '5.8.1',

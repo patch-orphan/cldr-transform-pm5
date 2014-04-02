@@ -1,4 +1,4 @@
-package CLDR::Number;
+package CLDR::Transform;
 
 use v5.8.1;
 use utf8;
@@ -6,7 +6,28 @@ use utf8;
 use Moo;
 use namespace::clean;
 
-our $VERSION = '0.00_1';
+our $VERSION      = '0.00_1';
+our $CLDR_VERSION = '25';
+
+has source => (
+    is      => 'rw',
+    default => 'Any',
+);
+
+has target => (
+    is      => 'rw',
+    default => 'Any',
+);
+
+has variant => (
+    is => 'rw',
+);
+
+sub transform {
+    my ($self, $text) = @_;
+
+    return $text;
+}
 
 1;
 
